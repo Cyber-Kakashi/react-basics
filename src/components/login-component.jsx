@@ -1,46 +1,60 @@
-import React from "react";
+import React, { useState } from "react";
 
-export default class LoginComponent extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      userName: "",
-      password: "",
-      isUsernameValid: false,
-    };
+function LoginComponent() {
+  const [userName, setUserName] = useState('');
+  const [password, setPassword] = useState('');
+  const [isValidUser, setIsValidUser] = useState(false);
 
-    this.handleUsernameChange = this.handleUsernameChange.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+  let handleSubmit = () => {
+    console.log('submitted: ', password);
+    fetch("https://run.mocky.io/v3/e9fbbabc-ef69-4bf1-9628-f3c9fe991119", {
+      method: "post",
+      body: JSON.stringify({
+        Email: userName,
+        Password: password
+      })
+    })
+    .then( response => response.json() )
+    .then((response) => {
+      if (response.loginResult === 'SUCCESS') {
+        window.location.href = "https://nexotto.com";
+      }
+    });
   }
 
-  handleSubmit(event) {
-    console.log(this.state);
-    event.preventDefault();
+  let resetForm = () => {
+    setIsValidUser(false);
   }
 
-  validateUsername = () => {
-    if (this.state.userName?.length) {
-      console.log("here");
-      this.setState({ isUsernameValid: true });
+  let validateUsername = () => {
+    if (userName.length) {
+      fetch('https://run.mocky.io/v3/386baee0-3694-4384-b69a-8e9798aac3a2')
+        .then(response => response.json())
+        .then(data => {
+          if (data.user.email === userName) {
+            console.log(userName, password);
+            setIsValidUser(true);
+          } else {
+            alert('Incorrect Email');
+          }
+        });
     }
   };
 
-  loginForm = () => {
-    if (!this.state.isUsernameValid)
+  let loginForm = () => {
+    if (!isValidUser)
       return (
         <div>
           <input
             type="text"
             className="form-control"
-            placeholder="Username"
-            onChange={this.handleUsernameChange}
-            value={this.state.userName}
+            placeholder="Email"
+            onChange={(e)=>setUserName(e.target.value)}
           />
           <button
             type="button"
             className="btn btn-primary"
-            onClick={this.validateUsername}
+            onClick={validateUsername}
           >
             Next
           </button>
@@ -53,31 +67,23 @@ export default class LoginComponent extends React.Component {
             type="password"
             className="form-control"
             placeholder="Password"
-            onChange={this.handlePasswordChange}
-            value={this.state.password}
+            onChange={(e)=> setPassword(e.target.value)}
           />
-          <input type="submit" className="btn btn-primary" value="Submit" />
+          <input type="button" onClick={resetForm} value="Back" className="btn btn-warning mr-5"></input>
+          <input type="button" onClick={handleSubmit} className="btn btn-primary ml-5" value="Submit" />
         </div>
       );
   };
 
-  handleUsernameChange(event) {
-    this.setState({ userName: event.target.value });
-  }
-
-  handlePasswordChange(event) {
-    this.setState({ password: event.target.value });
-  }
-
-  render() {
-    return (
-      <div className="row">
-        <div className="col-lg-12">
-          <div className="input-group">
-            <form onSubmit={this.handleSubmit}>{this.loginForm()}</form>
-          </div>
+  return (
+    <div className="row">
+      <div className="col-lg-12">
+        <div className="input-group">
+          <form>{loginForm()}</form>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
+
+export default LoginComponent;

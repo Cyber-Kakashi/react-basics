@@ -1,6 +1,8 @@
 import logo from "./logo.svg";
 import "./App.css";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import LoginComponent from "./components/login-component";
+import WelcomeComponent from "./components/welcome-component";
 
 function App() {
   return (
@@ -10,7 +12,13 @@ function App() {
         <p>
           <code>React Demo</code>
         </p>
-        <LoginComponent />
+        <BrowserRouter>
+          <Switch>
+            <Route path='/' exact component={LoginComponent}></Route>
+            <Route path='/welcome' exact component={WelcomeComponent}></Route>
+            <Route path='/' render={() => <div>404</div>}></Route>
+          </Switch>
+        </BrowserRouter>
       </header>
     </div>
   );
