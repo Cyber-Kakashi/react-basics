@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+// import { useDispatch } from "react-redux";
+// import { validateEmail } from '../redux/actions'
 
-function LoginComponent() {
+const LoginComponent = () => {
+  // const dispatch = useDispatch();
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [isValidUser, setIsValidUser] = useState(false);
@@ -35,7 +38,7 @@ function LoginComponent() {
             console.log(userName, password);
             setIsValidUser(true);
           } else {
-            alert('Incorrect Email');
+            alert('Incorrect Email. Hint: code@nexotto.com');
           }
         });
     }
@@ -86,4 +89,4 @@ function LoginComponent() {
   );
 }
 
-export default LoginComponent;
+export default  LoginComponent;
