@@ -14,7 +14,7 @@ function App() {
         </p>
         <BrowserRouter>
           <Switch>
-            <Route path='/login' exact component={LoginComponent}></Route>
+            <Route path='/react-basics/' exact component={LoginComponent}></Route>
             <Route path='/welcome' exact component={WelcomeComponent}></Route>
             {/* <Route path='/' render={() => <div>404</div>}></Route> */}
           </Switch>
